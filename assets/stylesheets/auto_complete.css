@@ -1,0 +1,23 @@
+div.auto_complete {
+  width: 350px;
+  background: #fff;
+}
+div.auto_complete ul {
+  margin:0;
+  padding:0;
+  width:100%;
+  list-style-type:none;
+}
+div.auto_complete ul li {
+  margin:0;
+  padding:3px;
+  background-color: #fff;
+}
+div.auto_complete ul li:hover {
+  background-color: #ffb;
+}
+div.auto_complete ul strong.highlight {
+  color: #800;
+  margin:0;
+  padding:0;
+}

@@ -1,0 +1,85 @@
+.startpage
+  .splitcontentleft
+    #box-left.box
+      %h2
+        Share
+        %span.orange your experience
+      %ul
+        %li
+          %b Submit bugs.
+          We need you to find all of them!
+        %li
+          %b Write patches.
+          Pitch in improvements of extensions!
+        %li
+          %b Join projects.
+          Make TYPO3 even better by dedicating your work!
+        %li
+          %b Publish extensions.
+          Open up your ideas to let others contribute!
+      - if ! User.current.logged?
+        = button_to "Login", signin_path
+    - if @news.any?
+      #news.box
+        %h3 Latest
+        = render :partial => 'news/news', :collection => @news
+        %p
+          = link_to "View all", :controller => 'news'
+  .splitcontentright
+    #box-right.box
+      %h2
+        Organize
+        %span.orange your contribution
+      %ul
+        %li
+          %b Instant Subversion Access.
+          Use subversion for revision management.
+        %li
+          %b Issue Tracker.
+          Manage issues and publish your roadmap!
+        %li
+          %b Invitations.
+          Invite others to join your project.
+        %li
+          %b News Publishing.
+          Tell others about the state of your project.
+      = button_to "Register Project", {:controller => 'start', :action => 'createProject' }, {:method => 'get'}
+    #randomUsers.box{:style => "min-height:100px;position:relative"}
+      %h3 Random Users
+      - i=0
+      - @random_users.each do |user|
+        %div{:id => "slideshow#{(i = i+1); i.to_s}", :style => "#{(i==1?'':'display:none;')}top:45px;position:absolute;"}
+          .role-user
+            = link_to_user_with_image user, 1
+          .class_selector
+            user-projects
+            - user.projects.each do |prj|
+              = link_to prj, :controller => 'projects', :action => 'show', :id =>   prj.identifier
+    :javascript
+      start_slideshow(1, #{@random_users.length}, 8000);
+
+      function start_slideshow(start_frame, end_frame, delay) {
+          setTimeout(switch_slides(start_frame,start_frame,end_frame, delay), delay);
+      }
+
+      function switch_slides(frame, start_frame, end_frame, delay) {
+          return (function() {
+              $('#slideshow' + frame).fadeOut('slow');
+              if (frame == end_frame) { frame = start_frame; } else { frame = frame + 1; }
+              setTimeout("$('#slideshow" + frame + "').fadeIn('slow');", 850);
+              setTimeout(switch_slides(frame, start_frame, end_frame, delay), delay + 850);
+          })
+      }
+
+      function setBoxesToSameHeight(box1, box2) {
+        var height = $(box1).height();
+        var height2 = $(box2).height();
+        if (height < height2)
+          height = height2;
+        $(box1).height(height+'px');
+        $(box2).height(height+'px');
+      }
+      setBoxesToSameHeight('#box-left', '#box-right');
+      setBoxesToSameHeight('#news', '#randomUsers');
+- content_for :header_tags do
+  = auto_discovery_link_tag(:atom, {:controller => 'news', :action => 'index', :key => User.current.rss_key, :format => 'atom'}, {:title => l(:label_news_latest)})
