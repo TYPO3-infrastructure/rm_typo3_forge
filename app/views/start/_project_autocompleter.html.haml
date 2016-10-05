@@ -1,0 +1,10 @@
+%ul.results
+  - @items.each do |project|
+    %li.project{"data-url" => project_url(project)}
+      .identifier= h project.identifier
+      .name
+        %span.informal= h project.name
+:javascript
+  $('li.project').click(function(){
+    window.open($(this).data("url"), "_self")
+  })
