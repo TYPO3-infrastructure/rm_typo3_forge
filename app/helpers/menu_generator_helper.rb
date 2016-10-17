@@ -10,7 +10,7 @@ module MenuGeneratorHelper
        if project.topbarbackgroundcolor? then
         out += 'background-color:'+project.topbarbackgroundcolor+';'
        end
-       if FileTest.exist?("#{RAILS_ROOT}/public/headerimages/"+project.id.to_s+'.jpg') then
+       if FileTest.exist?("#{Rails.root}/public/headerimages/"+project.id.to_s+'.jpg') then
         out += 'background-image:url(/headerimages/'+project.id.to_s+'.jpg);'
        end
        out = ' style="' + out + '"'

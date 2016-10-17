@@ -32,4 +32,12 @@ module ForgeHelper
    userimage = "//typo3.org/fileadmin/userimages/#{imageFile}-#{imageSize}.jpg"
    "<img src='#{userimage}' class='userimage userimage-#{size}' />".html_safe
  end
+
+  def format_mail(user)
+    if User.current.logged?
+      mail_to user.mail unless user.pref.hide_mail
+    else
+      "***@***.***"
+    end
+  end
 end

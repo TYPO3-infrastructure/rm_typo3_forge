@@ -18,7 +18,4 @@ $(id).keyup(function(){
 }, "html");
 }
 })
-$(id).focusout(function(){
-$(id + '_auto_complete').hide();
-});
 }
