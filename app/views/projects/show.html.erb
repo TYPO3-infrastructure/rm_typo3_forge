@@ -1,0 +1,170 @@
+<div class="contextual">
+  <% if User.current.allowed_to?(:add_subprojects, @project) %>
+    <%= link_to l(:label_subproject_new), new_project_path(:parent_id => @project), :class => 'icon icon-add' %>
+  <% end %>
+  <% if User.current.allowed_to?(:close_project, @project) %>
+    <% if @project.active? %>
+      <%= link_to l(:button_close), close_project_path(@project), :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-lock' %>
+    <% else %>
+      <%= link_to l(:button_reopen), reopen_project_path(@project), :data => {:confirm => l(:text_are_you_sure)}, :method => :post, :class => 'icon icon-unlock' %>
+    <% end %>
+  <% end %>
+</div>
+
+<% if ! @subprojects.any? %><h2><%=l(:label_overview)%></h2><% end %>
+<% if ! @project.is_public? %>
+  <p><b>Your project is still hidden!</b><br />Please unhide it by checking Settings->Information->Public.</p>
+<% end %>
+<% if @subprojects.any? %>
+  <%= textilizable @project.description %>
+<% end %>
+
+<% unless @project.active? %>
+  <p class="warning"><span class="icon icon-lock"><%= l(:text_project_closed) %></span></p>
+<% end %>
+
+<div class="splitcontentleft">
+  <% if @subprojects.empty? %>
+    <% if @project.description.present? %>
+      <div class="wiki">
+        <%= textilizable @project.description %>
+      </div>
+    <% end %>
+    <% unless @project.homepage.blank? %>
+      <ul><li><span class="label"><%=l(:field_homepage)%>:</span> <%= link_to_if uri_with_safe_scheme?(@project.homepage), @project.homepage, @project.homepage %></li></ul>
+    <% end %>
+  <% end %>
+
+  <% if User.current.allowed_to?(:view_issues, @project) %>
+  <div class="issues box">
+    <h3><%=l(:label_issue_tracking)%></h3>
+    <% if @trackers.present? %>
+    <table class="list issue-report">
+      <thead>
+        <tr>
+          <th></th>
+          <th><%=l(:label_open_issues_plural)%></th>
+          <th><%=l(:label_closed_issues_plural)%></th>
+          <th><%=l(:label_total)%></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @trackers.each do |tracker| %>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td class="name">
+            <%= link_to tracker.name, project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id) %>
+          </td>
+          <td>
+            <%= link_to @open_issues_by_tracker[tracker].to_i, project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id) %>
+          </td>
+          <td>
+            <%= link_to (@total_issues_by_tracker[tracker].to_i - @open_issues_by_tracker[tracker].to_i), project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id, :status_id => 'c') %>
+          </td>
+          <td>
+            <%= link_to @total_issues_by_tracker[tracker].to_i, project_issues_path(@project, :set_filter => 1, :tracker_id => tracker.id, :status_id => '*') %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <% end %>
+    <p>
+      <%= link_to l(:label_issue_view_all), project_issues_path(@project, :set_filter => 1) %>
+      <% if User.current.allowed_to?(:view_calendar, @project, :global => true) %>
+        | <%= link_to l(:label_calendar), project_calendar_path(@project) %>
+      <% end %>
+      <% if User.current.allowed_to?(:view_gantt, @project, :global => true) %>
+        | <%= link_to l(:label_gantt), project_gantt_path(@project) %>
+      <% end %>
+    </p>
+  </div>
+  <% end %>
+  <%= call_hook(:view_projects_show_left, :project => @project) %>
+  <!-- activities -->
+  <% if @events_by_day && @events_by_day.any?  %><!-- && authorize_for('activity', 'index') DOES NOT WORK YET -->
+    <div class="box project-activity-container">
+        <h3 class="icon22 icon22-tracker">Recent activities</h3>
+        <% @events_by_day.keys.sort {|x,y| y <=> x }.each do |day| %>
+          <h4><%= day_name(day.cwday) %> <%= day.day %></h4>
+          <dl>
+            <% @events_by_day[day].sort {|x,y| y.event_datetime <=> x.event_datetime }.each do |e| -%>
+            <dt class="<%= e.class.name.downcase %> <%= cycle('odd', 'even') %>">
+              <%= link_to truncate(h(e.event_title), 100), e.event_url %>  <span class="author"><%= e.event_author if e.respond_to?(:event_author) %></span></dt>
+              <% end -%>
+          </dl>
+        <% end -%>
+    </div>
+  <% end %>
+</div>
+
+<div class="splitcontentright project-listing">
+  <!-- START MEMBER BOX; alternative, use  render :partial => 'members_box' -->
+  <% if @users_by_role.any? %>
+    <div class="box project-member-container">
+      <h3 class="icon22 icon22-users"><%=l(:label_member_plural)%></h3>
+      <% @users_by_role.keys.sort_by{|role|
+        result = case role.name
+                 when 'Leader'
+                   1
+                 when 'Co-Leader'
+                   5
+                 when 'Member'
+                   10
+                 when 'Inactive Member'
+                   15
+                 when 'Pending Member'
+                   20
+                 else
+                   100
+                 end
+        result
+      }.each do |role| %>
+      <p class="role">
+      <h4><%= role.name %></h4>
+      <% @users_by_role[role].sort.each do |user| %>
+        <div class="role-user">
+          <%= link_to_user_with_image user, 1 %>
+        </div>
+      <% end %>
+      <div class="clearer"></div>
+      </p>
+    <% end %>
+    <% if User.current.logged? && !User.current.member_of?(@project) %>
+      <b><a href="javascript:void(0);" id="joinProjectLink">Join Project</a></b>
+      <div id="want-to-help" style="display:none">
+        <% remote_form_for :membership, :url => { :controller => 'projects', :action => 'membershiprequest', :id => @project.identifier }, :update => 'want-to-help' do %>
+          How do you want to help:<br /><textarea id="team-membership-request-comment" name="description" style="height:inherit; width:99.5%" rows="2"></textarea><br />
+          <%= submit_tag 'Submit team membership request' %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <% end %>
+
+  <% if @news.any? && authorize_for('news', 'index') %>
+  <div class="news box">
+    <h3><%=l(:label_news_latest)%></h3>
+    <%= render :partial => 'news/news', :collection => @news %>
+    <p><%= link_to l(:label_news_view_all), project_news_index_path(@project) %></p>
+  </div>
+  <% end %>
+
+  <% if @subprojects.any? %>
+  <div class="projects box">
+    <h3><%=l(:label_subproject_plural)%></h3>
+    <%= @subprojects.collect{|p| link_to p, project_path(p)}.join(", ").html_safe %>
+  </div>
+  <% end %>
+
+  <%= call_hook(:view_projects_show_right, :project => @project) %>
+</div>
+
+<% content_for :sidebar do %>
+  <%= render :partial => 'projects/sidebar' %>
+<% end %>
+
+<% content_for :header_tags do %>
+<%= auto_discovery_link_tag(:atom, {:controller => 'activities', :action => 'index', :id => @project, :format => 'atom', :key => User.current.rss_key}) %>
+<% end %>
+
+<% html_title(l(:label_overview)) -%>
