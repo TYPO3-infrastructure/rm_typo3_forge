@@ -16,7 +16,7 @@ module ProjectPatch
     end
     def write_file
       if @file_data.respond_to?('original_filename')
-        File.open("#{RAILS_ROOT}/public/headerimages/#{id}.jpg", "wb") { |file| file.write(@file_data.read) }
+        File.open("#{Rails.root}/public/headerimages/#{id}.jpg", "wb") { |file| file.write(@file_data.read) }
         # put calls to other logic here - resizing, conversion etc.
       end
     end
