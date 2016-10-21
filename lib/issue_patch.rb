@@ -10,7 +10,7 @@ module IssuePatch
 
   module InstanceMethods
     def project_with_relations_respect=(project, keep_tracker=false)
-      project_without_relations_respect(project, keep_tracker)
+      self.send(:project_without_relations_respect=, project, keep_tracker)
       unless Setting.cross_project_issue_relations?
         self.relations_from.clear
         self.relations_to.clear

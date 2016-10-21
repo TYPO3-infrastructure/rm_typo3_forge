@@ -1,4 +1,4 @@
-require 'application_helper'
+require 'redmine'
 
 
 Redmine::Plugin.register :forger_typo3 do
@@ -34,3 +34,8 @@ ApplicationHelper.send(:include, ForgeHelper)
 ApplicationController.send(:include, ApplicationControllerPatch)
 ProjectsController.send(:include, ProjectsControllerPatch)
 Issue.send(:include, IssuePatch)
+ProjectsHelper.send(:include, ProjectsHelperPatch)
+Mailer.send(:include, MailerPatch)
+Project.send(:include, ProjectPatch)
+WelcomeController.send(:include, WelcomeControllerPatch)
+Redmine::I18n.send(:include, RedmineI18nPatch)
