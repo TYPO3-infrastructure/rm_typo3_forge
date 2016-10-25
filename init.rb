@@ -2,6 +2,7 @@ require 'redmine'
 require_relative 'app/helpers/forge_helper.rb'
 require_relative 'app/helpers/menu_generator_helper.rb'
 
+require 'wiki_css/layout_hooks'
 
 Redmine::Plugin.register :forger_typo3 do
   name 'Forger Typo3 plugin'

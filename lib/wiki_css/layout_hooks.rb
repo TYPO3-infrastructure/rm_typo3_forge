@@ -7,7 +7,7 @@ module Opensearch
         page = context[:controller].instance_variable_get("@page")
         wiki = context[:controller].instance_variable_get("@wiki")
         return unless page
-        
+
         styles = []
         styles << url_for(:controller => 'wiki', :action => 'show', :project_id => project) if wiki.style
         styles << url_for(:controller => 'wiki', :action => 'show', :project_id => project, :id => page.title) if page.style

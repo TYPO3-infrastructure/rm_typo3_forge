@@ -4,9 +4,8 @@ class WikiStylesController < ApplicationController
   def edit
   end
 
-  verify :method => :put, :only => :update, :render => {:nothing => true, :status => :method_not_allowed }
   def update
-    @style.attributes = params[:style]
+    @style.attributes = style_params
     @style.author = User.current
 
     # delete the style record by setting :text to ""
@@ -44,4 +43,8 @@ private
       @style = @wiki.style || WikiStyle.new(:wiki => @wiki)
     end
   end
-end  
+
+  def style_params
+    params.require(:style).permit(:text)
+  end
+end

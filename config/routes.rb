@@ -25,7 +25,8 @@ Rails.application.routes.draw do
 
   resources :projects do
     get 'wiki.:format', controller: 'wiki', action: 'show'
+    put 'wiki_styles/:id.css', controller: 'wiki_styles', action: 'update'
     put 'wiki.css', controller: 'wiki_styles', action: 'update'
-    put 'wiki/:id.css', controller: 'wiki_styles', action: 'update'
+  
   end
 end
