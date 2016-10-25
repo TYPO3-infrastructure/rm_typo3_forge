@@ -17,4 +17,9 @@ Rails.application.routes.draw do
   get 'time_entries/report', :controller => 'time_entry_reports', :action => 'report'
   get 'projects/:project_id/time_entries/report.:format', :controller => 'time_entry_reports', :action => 'report'
 
+  match 'services/projects', :controller => 'project_services', :action => 'index', via: :all
+  match 'services/projects/:id', :controller => 'project_services', :action => 'show', via: :all
+
+  match 'services/users/active', :controller => 'user_services', :action => 'active', via: :all
+
 end
