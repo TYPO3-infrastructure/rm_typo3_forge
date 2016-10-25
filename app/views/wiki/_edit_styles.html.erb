@@ -1,8 +1,8 @@
 <%- if User.current.allowed_to?(:edit_wiki_styles, @project) %>
   <%- if tab[:style].page && @page.new_record? %>
-  <p class="warning"><%=l(:text_need_to_save_wiki_page) %></p>
+  <p class="warning"><%=l(:text_need_to_save_wiki_page).html_safe %></p>
   <% else %>
-    <% form_for :style, tab[:style], :url => {:controller => 'wiki_styles', :action => 'update', :project_id => @project, :id => tab[:global] ? nil: @page.title}, :html => {:method => :put} do |f| %>
+    <%= form_for :style, :url => {:controller => 'wiki_styles', :action => 'update', :project_id => @project, :id => tab[:global] ? nil: @page.title}, :html => {:method => :put} do |f| %>
     <p><%= f.text_area :text, :cols => 100, :rows => 25, :class => 'wiki-edit', :accesskey => accesskey(:edit) %></p>
     <p>
       <%= submit_tag l(:button_save) %>
