@@ -23,4 +23,9 @@ Rails.application.routes.draw do
 
   match 'services/users/active', :controller => 'user_services', :action => 'active', via: :all
 
+  resources :projects do
+    get 'wiki.:format', controller: 'wiki', action: 'show'
+    put 'wiki.css', controller: 'wiki_styles', action: 'update'
+    put 'wiki/:id.css', controller: 'wiki_styles', action: 'update'
+  end
 end
