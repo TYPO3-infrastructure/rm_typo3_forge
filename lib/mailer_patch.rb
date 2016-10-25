@@ -13,13 +13,13 @@ module MailerPatch
         end
       }
       #logger.debug('Sending project membership request to '+mail_recipients.join(','))
-      recipients mail_recipients
-      subject 'Request for Membership'
-      from user.mail
-      body :user => user,
-      :project => project,
-      :url => url_for(:controller => 'projects', :action => 'settings', :id => project.identifier),
-      :description => description
+      recipients = mail_recipients
+      subject = 'Request for Membership'
+      from  = user.mail
+      @user = user,
+      @project = project,
+      @url = url_for(:controller => 'projects', :action => 'settings', :id => project.identifier),
+      @description = description
     end
   end
 end

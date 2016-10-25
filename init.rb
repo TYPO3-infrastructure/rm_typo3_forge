@@ -6,9 +6,10 @@ Redmine::Plugin.register :forger_typo3 do
   author 'Sascha Graef'
   description 'This Plugin is for use with Redmine to represent the Typo3 Forge functianlity'
   version '0.0.1'
-  url 'http://example.com/path/to/plugin'
-  author_url 'http://example.com/about'
+  url 'http://gitlab.l.davitec.de/Typo3Association/forger_typo3'
+  author_url 'http://www.github.com/SGraef'
 
+  Project.safe_attributes 'topbarbackgroundcolor', 'topbartextcolor', 'topbarheaderimage'
   settings :default => {
 
     'own_projects_version4_parent_identifier' => 'extensions', # TODO - needs to be some extension identifier
