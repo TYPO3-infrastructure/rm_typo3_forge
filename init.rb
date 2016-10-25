@@ -1,5 +1,6 @@
 require 'redmine'
 
+require 'wiki_css/layout_hooks'
 
 Redmine::Plugin.register :forger_typo3 do
   name 'Forger Typo3 plugin'
