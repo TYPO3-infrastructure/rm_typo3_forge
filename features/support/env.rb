@@ -8,6 +8,7 @@ require 'cucumber/rails'
 require 'email_spec' # add this line if you use spork
 require 'email_spec/cucumber'
 require 'capybara/poltergeist'
+require 'cucumber/api_steps'
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any
 # selectors in your step definitions to use the XPath syntax.
