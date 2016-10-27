@@ -10,13 +10,8 @@ def login_as(user, password)
 end
 
 def logout
-  path = url_for(:controller => 'account', :action=>'logout', :only_path=>true)
-  if @sessiondriver
-      @sessiondriver.submit :post, path, @task_params
-  elsif page.driver.respond_to?(:post)
-    page.driver.post(path, {})
-  else
-    post path
+  if @user
+    click_on("Sign out")
   end
   @user = nil
   User.current = nil
