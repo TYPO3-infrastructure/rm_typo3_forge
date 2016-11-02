@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get 'projects/:project_id/time_entries/report.:format', :controller => 'time_entry_reports', :action => 'report'
 
   match 'services/projects', :controller => 'project_services', :action => 'index', via: :all
-  match 'services/projects/:id', :controller => 'project_services', :action => 'show', via: :all
+  match 'services/projects/:id', :controller => 'project_services', :action => 'show', via: :all, as: :project_service_show
 
   match 'services/users/active', :controller => 'user_services', :action => 'active', via: :all
 
@@ -27,6 +27,6 @@ Rails.application.routes.draw do
     get 'wiki.:format', controller: 'wiki', action: 'show'
     put 'wiki_styles/:id.css', controller: 'wiki_styles', action: 'update'
     put 'wiki.css', controller: 'wiki_styles', action: 'update'
-  
+
   end
 end

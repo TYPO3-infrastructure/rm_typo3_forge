@@ -9,6 +9,7 @@ Given(/^an active user "([^"]*)" with password "([^"]*)" is existing$/) do |logi
   click_on("Submit")
   @current_user = User.find_by(login: login)
   @current_user.activate!
+  @current_user.update_attributes(img_hash: "Empty")
 end
 
 Given(/^"([^"]*)" is in the project "([^"]*)"$/) do |login, projectname|
