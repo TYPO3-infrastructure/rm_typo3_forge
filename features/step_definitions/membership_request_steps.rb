@@ -1,27 +1,61 @@
 Given(/^an active user "([^"]*)" with password "([^"]*)" is existing$/) do |login, password|
-  u = User.new
-  u.login = login
-  u.mail = "#{login}@example.org"
-  u.firstname = "Test"
-  u.lastname = "Run"
-  u.password = password
-  u.save!
-  u.activate!
+  visit register_path
+  fill_in("user_login", with: login)
+  fill_in("user_password", with: "#{login}#{login}")
+  fill_in("user_password_confirmation", with: "#{login}#{login}")
+  fill_in("user_mail", with: "#{login}@example.org")
+  fill_in("user_firstname", with: "Test")
+  fill_in("user_lastname", with: "Run")
+  click_on("Submit")
+  @current_user = User.find_by(login: login)
+  @current_user.activate!
 end
 
 Given(/^"([^"]*)" is in the project "([^"]*)"$/) do |login, projectname|
-  project = Project.find_by(name: projectname)
   user = User.find_by(login: login)
-  role = Role.create(name: "Leader")
+  role = Role.create(name: "Leader", permissions:
+  [:view_master_backlog,
+   :view_taskboards,
+   :subscribe_to_calendars,
+   :view_scrum_statistics,
+   :add_messages,
+   :view_calendar,
+   :view_files,
+   :view_gantt,
+   :view_issues,
+   :add_issues,
+   :manage_issue_relations,
+   :add_issue_notes,
+   :edit_own_issue_notes,
+   :move_issues,
+   :save_queries,
+   :view_issue_watchers,
+   :add_issue_watchers,
+   :browse_repository,
+   :view_changesets,
+   :view_time_entries,
+   :view_wiki_pages,
+   :view_wiki_edits,
+   :edit_wiki_pages,
+   :edit_wiki_styles])
+  project = Project.find_by(name: projectname)
   members = []
   member = Member.new(:project => project, :user => user)
   member.role_ids = [role.id]
   members << member
   project.members = members
+  logout
 end
 
 Given(/^a toplevel project "([^"]*)" is existing$/) do |projectname|
-  Project.create(name: projectname, identifier: projectname)
+  login_as(@current_user.login, "#{@current_user.login}#{@current_user.login}")
+  @current_user.admin = true
+  @current_user.save
+  @current_user.reload
+  visit new_project_path
+  fill_in("project_name", with: projectname)
+  fill_in("project_identifier", with: projectname.downcase)
+  click_on("Create")
 end
 
 Given(/^an project "([^"]*)" is existing and belongs to "([^"]*)"$/) do |projectname, parent_project_name|
@@ -29,7 +63,7 @@ Given(/^an project "([^"]*)" is existing and belongs to "([^"]*)"$/) do |project
 end
 
 Given(/^I am logged in as user "([^"]*)" with password "([^"]*)"$/) do |login, password|
-    login_as(login, password)
+    login_as(login, "#{login}#{login}")
     expect(page).to have_content login
 end
 

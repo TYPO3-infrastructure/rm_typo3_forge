@@ -1,5 +1,6 @@
 require 'redmine'
 
+require 'wiki_css/layout_hooks'
 
 Redmine::Plugin.register :forger_typo3 do
   name 'Forger Typo3 plugin'
@@ -28,6 +29,10 @@ Redmine::Plugin.register :forger_typo3 do
     'own_projects_git_base_url' => 'git://git.typo3.org/',  # WITH / at the end
     'own_projects_first_user_role_id' => 7 # Team leader
     }, :partial => 'settings/settings'
+
+  project_module :wiki do
+    permission :edit_wiki_styles, {:wiki_styles => [:edit, :update]}, :require => :member
+  end
 end
 
 ApplicationHelper.send(:include, MenuGeneratorHelper)
@@ -40,3 +45,7 @@ Mailer.send(:include, MailerPatch)
 Project.send(:include, ProjectPatch)
 WelcomeController.send(:include, WelcomeControllerPatch)
 Redmine::I18n.send(:include, RedmineI18nPatch)
+WikiHelper.send(:include, WikiCss::WikiHelperPatch)
+WikiController.send(:include, WikiCss::WikiControllerPatch)
+WikiPage.send(:include, WikiCss::WikiPagePatch)
+Wiki.send(:include, WikiCss::WikiPatch)
