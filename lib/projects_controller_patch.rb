@@ -22,7 +22,7 @@ module ProjectsControllerPatch
         @project.members << Member.new(:user_id => User.current.id, :role_ids => Role.where(name: "Pending Member").pluck(:id)) if request.post?
 
         # Send email
-        Mailer.project_membership_request(@project, User.current, params[:description]).deliver_now
+        Mailer.project_membership_request(@project, User.current, params[:description]).deliver
         respond_to do |format|
           format.js
         end
