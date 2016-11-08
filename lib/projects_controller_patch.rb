@@ -22,8 +22,10 @@ module ProjectsControllerPatch
         @project.members << Member.new(:user_id => User.current.id, :role_ids => Role.where(name: "Pending Member").pluck(:id)) if request.post?
 
         # Send email
-        Mailer.deliver_project_membership_request(@project, User.current, params[:description])
-        render :text => "We have received your request and will review it soon!"
+        Mailer.project_membership_request(@project, User.current, params[:description]).deliver_now
+        respond_to do |format|
+          format.js
+        end
       end
 
       private
