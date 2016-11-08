@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post '/start/create_project', to: 'start#createProject'
 
   get 'projects/membershiprequest/:id', controller: 'projects', action: 'membershiprequest', as: :requestmembership
-  post 'projects/membershiprequest/:id', controller: 'projects', action: 'membershiprequest'
+  post 'projects/membershiprequest/:id', controller: 'projects', action: 'membershiprequest', as: :request_membership
 
   match 'roles/workflow/:id/:role_id/:tracker_id', :controller => 'roles', :action => 'workflow', via: :all
 
