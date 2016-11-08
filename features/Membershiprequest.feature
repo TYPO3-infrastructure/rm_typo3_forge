@@ -14,4 +14,4 @@ Feature: Projectmembership Requests
     Given I am logged in as user "tester" with password "iwanttotest"
     And I am on the project page of "testproject"
     When I am submitting an membershiprequest
-    Then I will see "We have received your request and will review it soon!"
+    Then I will see "We have received your request and will review it soon!" in "want-to-help"

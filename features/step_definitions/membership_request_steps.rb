@@ -82,3 +82,7 @@ end
 Then(/^I will see "([^"]*)"$/) do |text|
   expect(page).to have_content(text)
 end
+
+Then(/^I will see "([^"]*)" in "([^"]*)"$/) do |text, id|
+  expect(page.find("#want-to-help")).to have_content(text)
+end
