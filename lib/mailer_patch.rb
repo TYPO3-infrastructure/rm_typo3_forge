@@ -16,10 +16,12 @@ module MailerPatch
       recipients = mail_recipients
       subject = 'Request for Membership'
       from  = user.mail
-      @user = user,
-      @project = project,
+      @user = user
+      @project = project
       @url = url_for(:controller => 'projects', :action => 'settings', :id => project.identifier),
       @description = description
+      mail :to => mail_recipients, :from => from, :subject => subject
+
     end
   end
 end
