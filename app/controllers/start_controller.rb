@@ -44,11 +44,11 @@ class StartController < ApplicationController
       package_key = params[:package_key]
 
       if params[:project_type] == 'v4_extension'
-        parent_id = Project.find(Setting.plugin_flow_start['own_projects_version4_parent_identifier']).id
-        base_identifier_name = Setting.plugin_flow_start['own_projects_version4_identifier_prefix']
-        git_base_path = Setting.plugin_flow_start['own_projects_version4_git_base_path']
+        parent_id = Project.find(Setting.plugin_forger_typo3['own_projects_version4_parent_identifier']).id
+        base_identifier_name = Setting.plugin_forger_typo3['own_projects_version4_identifier_prefix']
+        git_base_path = Setting.plugin_forger_typo3['own_projects_version4_git_base_path']
 
-        git_base_directory = Setting.plugin_flow_start['own_projects_version4_base_directory']
+        git_base_directory = Setting.plugin_forger_typo3['own_projects_version4_base_directory']
 
         if (!package_key.match(/^[a-z][a-z0-9_]*$/)) then
           flash.now[:error] = 'Your extension key has an invalid format. It should only consist of lowercase letters, numbers and underscores (_), and it must start with lowercase letters.'
@@ -57,11 +57,11 @@ class StartController < ApplicationController
         end
 
       elsif params[:project_type] == 'v5_package'
-        parent_id = Project.find(Setting.plugin_flow_start['own_projects_version5_parent_identifier']).id
-        base_identifier_name = Setting.plugin_flow_start['own_projects_version5_identifier_prefix']
-        git_base_path = Setting.plugin_flow_start['own_projects_version5_git_base_path']
+        parent_id = Project.find(Setting.plugin_forger_typo3['own_projects_version5_parent_identifier']).id
+        base_identifier_name = Setting.plugin_forger_typo3['own_projects_version5_identifier_prefix']
+        git_base_path = Setting.plugin_forger_typo3['own_projects_version5_git_base_path']
 
-        git_base_directory = Setting.plugin_flow_start['own_projects_version5_base_directory']
+        git_base_directory = Setting.plugin_forger_typo3['own_projects_version5_base_directory']
 
         if (!package_key.match(/^[A-Z][a-zA-Z0-9_]*$/)) then
           flash.now[:error] = 'Your extension key has an invalid format. It should be written UpperCamelCased.'
@@ -119,7 +119,7 @@ class StartController < ApplicationController
         logger.info "Creating project @project, triggered by #{User.current.login} (#{User.current.id})"
 
         # add User to Project
-        @project.members << Member.new(:user_id => User.current.id, :role_ids => [Setting.plugin_flow_start['own_projects_first_user_role_id']])
+        @project.members << Member.new(:user_id => User.current.id, :role_ids => [Setting.plugin_forger_typo3['own_projects_first_user_role_id']])
 
         # only create repo in case it was requested
         # @todo refactor into service/method so it can be reused outside of the start controller
@@ -128,13 +128,13 @@ class StartController < ApplicationController
           @repository = Repository.factory(:Git)
           @repository.project = @project
 
-          repo_path = Setting.plugin_flow_start['own_projects_version4_base_directory'] + package_key + ".git"
+          repo_path = Setting.plugin_forger_typo3['own_projects_version4_base_directory'] + package_key + ".git"
           @repository.url = 'file://' + repo_path
           @repository.save
 
           logger.info "Setting up Git repository in #{repo_path}"
           custom_system 'git init --bare ' + repo_path
-          git_server_url = Setting.plugin_flow_start['own_projects_git_base_url'] + Setting.plugin_flow_start['own_projects_version4_git_base_path'] + package_key + '.git'
+          git_server_url = Setting.plugin_forger_typo3['own_projects_git_base_url'] + Setting.plugin_forger_typo3['own_projects_version4_git_base_path'] + package_key + '.git'
 
           # Write into MQ
           amqp_config = YAML.load_file("config/amqp.yml")["amqp"]
