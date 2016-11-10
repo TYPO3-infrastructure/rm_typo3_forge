@@ -1,4 +1,4 @@
-Given(/^an active user "([^"]*)" with password "([^"]*)" is existing$/) do |login, password|
+Given(/^an active user "([^"]*)"$/) do |login|
   visit register_path
   fill_in("user_login", with: login)
   fill_in("user_password", with: "#{login}#{login}")
@@ -63,7 +63,7 @@ Given(/^an project "([^"]*)" is existing and belongs to "([^"]*)"$/) do |project
   Project.create(name: projectname, identifier: projectname, parent: Project.find_by(name: parent_project_name))
 end
 
-Given(/^I am logged in as user "([^"]*)" with password "([^"]*)"$/) do |login, password|
+Given(/^I am logged in as user "([^"]*)"$/) do |login|
     login_as(login, "#{login}#{login}")
     expect(page).to have_content login
 end

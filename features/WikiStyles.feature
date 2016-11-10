@@ -2,16 +2,16 @@
 Feature: Allow possibility to add CSS to Wiki Pages
 
 Background:
-  Given an active user "tester" with password "iwanttotest" is existing
+  Given an active user "tester"
   And a toplevel project "Tests" is existing
   And an project "testproject" is existing and belongs to "Tests"
-  And an active user "owner" with password "iownthatproject" is existing
+  And an active user "owner"
   And "owner" is in the project "testproject"
 
   @javascript
   Scenario: WikiPage Style
     In Forge Redmine there is a possibility to append_style to the wikipages
-    Given I am logged in as user "owner" with password "iownthatproject"
+    Given I am logged in as user "owner"
     And I am on the wiki Page of project "testproject"
     Then I will see the "Styles" section
     When I Fill "h1. FooBar" in the "content_text"
