@@ -1,11 +1,11 @@
 Feature: API
 
   Background:
-    Given an active user "tester" with password "iwanttotest" is existing
+    Given an active user "tester"
     And a toplevel project "Tests" is existing
     And an project "testproject" is existing and belongs to "Tests"
     And an private project "private_test_project" is existing and belongs to "Tests"
-    And an active user "owner" with password "iownthatproject" is existing
+    And an active user "owner"
     And "owner" is in the project "testproject"
 
 
