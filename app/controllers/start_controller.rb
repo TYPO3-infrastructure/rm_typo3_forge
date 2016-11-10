@@ -127,7 +127,7 @@ class StartController < ApplicationController
         flash[:notice] = l(:notice_successful_create)
         render :action => :projectSuccessfullyCreated
       else # if !@project.save
-        flash.now[:error] = "Unable to create the project. Please try a shorter project name."  # @project.errors.full_messages.join(" ")
+        #flash.now[:error] = "Unable to create the project. Please try a shorter project name."  # @project.errors.full_messages.join(" ")
         render
       end # if @project.save
     end # if request.get
