@@ -94,7 +94,7 @@ class StartController < ApplicationController
 
         # only create repo in case it was requested
         if create_repo
-          create_repository package_key
+          create_repository package_key, force_review, git_base_path
         end #
         flash[:notice] = l(:notice_successful_create)
         render :action => :projectSuccessfullyCreated

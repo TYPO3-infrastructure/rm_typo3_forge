@@ -41,7 +41,7 @@ module ForgeHelper
     end
   end
 
-  def create_repository package_key
+  def create_repository package_key, force_review, git_base_path
     # Add Repository to project
     @repository = Repository.factory(:Git)
     @repository.project = @project
