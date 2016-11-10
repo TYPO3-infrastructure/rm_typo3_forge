@@ -40,6 +40,7 @@ end
 ApplicationHelper.send(:include, MenuGeneratorHelper)
 ApplicationHelper.send(:include, ForgeHelper)
 ApplicationController.send(:include, ApplicationControllerPatch)
+ApplicationController.send(:include, ForgeHelper)
 ProjectsController.send(:include, ProjectsControllerPatch)
 Issue.send(:include, IssuePatch)
 ProjectsHelper.send(:include, ProjectsHelperPatch)

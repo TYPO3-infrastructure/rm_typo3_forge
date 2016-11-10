@@ -34,7 +34,6 @@ class StartController < ApplicationController
     if request.get?
       # Display "create project" Form
     else
-
       base_identifier_name = ''
       parent_id = 0
       git_base_path = ''
@@ -122,65 +121,8 @@ class StartController < ApplicationController
         @project.members << Member.new(:user_id => User.current.id, :role_ids => [Setting.plugin_forger_typo3['own_projects_first_user_role_id']])
 
         # only create repo in case it was requested
-        # @todo refactor into service/method so it can be reused outside of the start controller
-        if create_repo then
-          # Add Repository to project
-          @repository = Repository.factory(:Git)
-          @repository.project = @project
-
-          repo_path = Setting.plugin_forger_typo3['own_projects_version4_base_directory'] + package_key + ".git"
-          @repository.url = 'file://' + repo_path
-          @repository.save
-
-          logger.info "Setting up Git repository in #{repo_path}"
-          custom_system 'git init --bare ' + repo_path
-          git_server_url = Setting.plugin_forger_typo3['own_projects_git_base_url'] + Setting.plugin_forger_typo3['own_projects_version4_git_base_path'] + package_key + '.git'
-
-          # Write into MQ
-          amqp_config = YAML.load_file("config/amqp.yml")["amqp"]
-
-          logger.info "Read AMQP config, connecting to amqp://#{amqp_config["username"]}@#{amqp_config["host"]}:#{amqp_config["port"]}/#{amqp_config["vhost"]}"
-
-          bunny = Bunny.new(:host  => amqp_config["host"],
-                            :port  => amqp_config["port"],
-                            :user  => amqp_config["username"],
-                            :pass  => amqp_config["password"],
-                            :vhost => amqp_config["vhost"])
-          bunny.start
-
-          logger.info "Connected to #{amqp_config["host"]}"
-
-          channel_name = "org.typo3.forge.repo.git.create"
-
-          logger.info "Creating channel #{channel_name}"
-          channel = bunny.create_channel
-
-          logger.info "Connecting to exchange #{channel_name}"
-          exchange = channel.fanout(channel_name, :durable => true)
-
-          message_data = {
-              :event  =>  "project_created",
-              :project => package_key,
-              :project_path => git_base_path,
-              :force_review => force_review
-          }
-
-          message_metadata = {
-              :routing_key => channel_name,
-              :persistent => true,
-              :mandatory => true,
-              :content_type => "application/json",
-              :user_id => amqp_config["username"],
-              :app_id => "redmine on #{request.host}"
-          }
-
-          logger.info "Trying to publish message: #{message_data.to_json} with metadata: #{message_metadata.to_json}"
-
-          exchange.publish(message_data.to_json, message_metadata)
-
-          logger.info "Message published"
-
-          bunny.stop
+        if create_repo
+          create_repository package_key
         end #
         flash[:notice] = l(:notice_successful_create)
         render :action => :projectSuccessfullyCreated
