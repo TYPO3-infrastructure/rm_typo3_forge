@@ -42,48 +42,19 @@ class StartController < ApplicationController
 
       package_key = params[:package_key]
 
+
       if params[:project_type] == 'v4_extension'
-        parent_id = Project.find(Setting.plugin_forger_typo3['own_projects_version4_parent_identifier']).id
-        base_identifier_name = Setting.plugin_forger_typo3['own_projects_version4_identifier_prefix']
-        git_base_path = Setting.plugin_forger_typo3['own_projects_version4_git_base_path']
-
-        git_base_directory = Setting.plugin_forger_typo3['own_projects_version4_base_directory']
-
-        if (!package_key.match(/^[a-z][a-z0-9_]*$/)) then
-          flash.now[:error] = 'Your extension key has an invalid format. It should only consist of lowercase letters, numbers and underscores (_), and it must start with lowercase letters.'
-          render
-          return
-        end
-
+        @setting_identifer = "version4"
       elsif params[:project_type] == 'v5_package'
-        parent_id = Project.find(Setting.plugin_forger_typo3['own_projects_version5_parent_identifier']).id
-        base_identifier_name = Setting.plugin_forger_typo3['own_projects_version5_identifier_prefix']
-        git_base_path = Setting.plugin_forger_typo3['own_projects_version5_git_base_path']
-
-        git_base_directory = Setting.plugin_forger_typo3['own_projects_version5_base_directory']
-
-        if (!package_key.match(/^[A-Z][a-zA-Z0-9_]*$/)) then
-          flash.now[:error] = 'Your extension key has an invalid format. It should be written UpperCamelCased.'
-          render
-          return
-        end
-
-      else
-        flash.now[:error] = 'System error. Unfortunately the system was not able to complete your request. Please file a bug.'
+        @setting_identifer = "version4"
       end
+      if @setting_identifer
+        parent_id = Project.find(Setting.plugin_forger_typo3["own_projects_#{@setting_identifer}_parent_identifier"]).id
+        base_identifier_name = Setting.plugin_forger_typo3["own_projects_#{@setting_identifer}_identifier_prefix"]
+        git_base_path = Setting.plugin_forger_typo3["own_projects_#{@setting_identifer}_git_base_path"]
 
-      if (params[:package_key] and params[:package_key].empty?) then
-        flash.now[:error] = 'You did not specify a package key!'
-        render
-        return
+        git_base_directory = Setting.plugin_forger_typo3["own_projects_#{@setting_identifer}_base_directory"]
       end
-
-      if (params[:project_name] and params[:project_name].empty?) then
-        flash.now[:error] = 'You did not specify a name!'
-        render
-        return
-      end
-
       # enable creation of repo ?
       if (params[:create_repo] and params[:create_repo] == 'yes') then
         create_repo = true
@@ -106,9 +77,10 @@ class StartController < ApplicationController
 
       @project = Project.new(
         :name => params[:project_name],
-        #        :parent_id => parent_id,
         :description => params[:description],
         :identifier => identifier_name,
+        :project_type => params[:project_type],
+        :creation_type => "register",
         :is_public => 0
       )
       @project.enabled_module_names = Redmine::AccessControl.available_project_modules
