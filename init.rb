@@ -1,4 +1,6 @@
 require 'redmine'
+require_relative 'app/helpers/forge_helper.rb'
+require_relative 'app/helpers/menu_generator_helper.rb'
 
 
 Redmine::Plugin.register :forger_typo3 do
