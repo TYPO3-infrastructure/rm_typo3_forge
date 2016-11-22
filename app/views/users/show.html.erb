@@ -9,9 +9,9 @@
     <%= output_user_image @user, 2 %>
   </p>
 
-  <p>
-    <%= format_mail @user %>
-  </p>
+  <% unless @user.pref.hide_mail %>
+    <p><%= mail_to(@user.mail) %></p>
+  <% end %>
 <ul>
   <% if User.current.admin? %>
     <li><%=l(:field_login)%>: <%= @user.login %></li>
