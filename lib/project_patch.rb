@@ -18,7 +18,6 @@ module ProjectPatch
     end
 
     def validate_identifier
-      binding.pry
       if creation_type == "register"
         case project_type
         when 'v4_extension'
