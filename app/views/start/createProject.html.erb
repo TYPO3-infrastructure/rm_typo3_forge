@@ -1,3 +1,5 @@
+<%= error_messages_for @project %>
+
 <h2>Create Project on forge.typo3.org</h2>
 <div class="box">
 <h3>Have your project instantly available!</h3>
@@ -9,6 +11,7 @@ After you filled out the form below, you will have the following resources just 
   <li>Collaborate with your fellow team members in the <b>wiki</b></li>
 </ul>
 </div>
+
 <%= form_tag({:action => 'createProject'}) do %>
 
 <div class="tabular settings box">
