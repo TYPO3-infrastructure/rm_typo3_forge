@@ -29,14 +29,6 @@ module ForgeHelper
    "<img src='#{userimage}' class='userimage userimage-#{size}' #{imageSizeHash[size]}/>".html_safe
  end
 
-  def format_mail(user)
-    if User.current.logged?
-      mail_to user.mail unless user.pref.hide_mail
-    else
-      "***@***.***"
-    end
-  end
-
   def create_repository package_key, force_review, git_base_path
     # Add Repository to project
     @repository = Repository.factory(:Git)
