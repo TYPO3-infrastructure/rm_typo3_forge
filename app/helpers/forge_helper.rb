@@ -19,18 +19,14 @@ module ForgeHelper
 
 # output the user image
  def output_user_image(user, size=0)
-   imageSize = case size
-     when 0 then "small"
-     when 1 then "mid"
-     when 2 then "big"
-   end
+   imageSizeHash = {0 => "width='18' height='24'", 1 => "width='30' height='40'", 2 => "width='140' height='185'"}
    if ! (user.img_hash.nil? || user.img_hash=='')
      imageFile = user.img_hash
    else
      imageFile = '_dummy'
    end
-   userimage = "//typo3.org/fileadmin/userimages/#{imageFile}-#{imageSize}.jpg"
-   "<img src='#{userimage}' class='userimage userimage-#{size}' />".html_safe
+   userimage = "https://typo3.org/services/userimage.php?username=#{user.login}"
+   "<img src='#{userimage}' class='userimage userimage-#{size}' #{imageSizeHash[size]}/>".html_safe
  end
 
   def format_mail(user)
