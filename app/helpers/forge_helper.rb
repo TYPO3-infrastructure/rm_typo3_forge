@@ -26,7 +26,7 @@ module ForgeHelper
      imageFile = '_dummy'
    end
    userimage = "https://typo3.org/services/userimage.php?username=#{user.login}"
-   "<img src='#{userimage}' class='userimage userimage-#{size}' #{imageSizeHash[size]}/>".html_safe
+   "<img src='#{userimage}' class='userimage userimage-#{size}' #{imageSizeHash[size]} onError='this.onerror=null;this.src=\"https://typo3.org/fileadmin/userimages/_dummy-big.jpg\";'/>".html_safe
  end
 
   def create_repository package_key, force_review, git_base_path
