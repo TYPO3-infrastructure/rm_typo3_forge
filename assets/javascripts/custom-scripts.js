@@ -1,10 +1,10 @@
 /* Custom scripts for forge.typo3.org */
 
 /* "Join" button */
-$(document).ready('#joinProjectLink').click(function(){
+$(document).ready(function (){$('#joinProjectLink').click(function(){
   $('#joinProjectLink').css('visibility', 'hidden');
   $('#want-to-help').slideDown(0.2);
-})
+});})
 
 /* auto_complete*/
 function auto_complete(id){
