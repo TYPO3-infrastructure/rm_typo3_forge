@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   match 'services/projects/:id', :controller => 'project_services', :action => 'show', via: :all, as: :project_service_show
 
   match 'services/users/active', :controller => 'user_services', :action => 'active', via: :all
-
+  match 'projects/show/:id', to: redirect('projects/%{id}'), via: :all
   resources :projects do
     get 'wiki.:format', controller: 'wiki', action: 'show'
     put 'wiki_styles/:id.css', controller: 'wiki_styles', action: 'update'
