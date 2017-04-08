@@ -4,12 +4,12 @@ require_relative 'app/helpers/menu_generator_helper.rb'
 
 require 'wiki_css/layout_hooks'
 
-Redmine::Plugin.register :forger_typo3 do
-  name 'Forger Typo3 plugin'
+Redmine::Plugin.register :typo3_forge do
+  name 'TYPO3 forge plugin'
   author 'Sascha Graef'
-  description 'This Plugin is for use with Redmine to represent the Typo3 Forge functianlity'
+  description 'TYPO3 customization'
   version '0.0.1'
-  url 'http://gitlab.l.davitec.de/Typo3Association/forger_typo3'
+  url 'https://github.com/TYPO3-infrastructure/rm_typo3_forge'
   author_url 'http://www.github.com/SGraef'
 
   Project.safe_attributes 'topbarbackgroundcolor', 'topbartextcolor', 'topbarheaderimage'
