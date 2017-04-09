@@ -11,7 +11,7 @@ module WelcomeControllerPatch
   module InstanceMethods
     def index_with_typo3
       @news = News.latest User.current, 2
-      @random_users = User.where("img_hash != ''").limit(10).order("RAND()")
+      @random_users = User.where("type='User'").limit(10).order("RAND()")
 
       render 'start/index'
     end

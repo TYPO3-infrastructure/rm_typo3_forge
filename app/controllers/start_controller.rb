@@ -11,7 +11,7 @@ class StartController < ApplicationController
   def index
     @news = News.latest User.current, 2
 
-    @random_users = User.where("img_hash != ''").limit(10).order("RAND()")
+    @random_users = User.where("type='User'").limit(10).order("RAND()")
 
     #@projects = Project.list User.current
     #projects = Project.find :all,
