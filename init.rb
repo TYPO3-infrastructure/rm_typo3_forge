@@ -39,6 +39,7 @@ end
 
 ApplicationHelper.send(:include, MenuGeneratorHelper)
 ApplicationHelper.send(:include, ForgeHelper)
+AccountController.send(:include, AccountControllerPatch)
 ApplicationController.send(:include, ApplicationControllerPatch)
 ApplicationController.send(:include, ForgeHelper)
 ProjectsController.send(:include, ProjectsControllerPatch)
