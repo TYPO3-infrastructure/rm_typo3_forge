@@ -19,14 +19,8 @@ module ForgeHelper
 
 # output the user image
  def output_user_image(user, size=0)
-   imageSizeHash = {0 => "width='18' height='24'", 1 => "width='30' height='40'", 2 => "width='140' height='185'"}
-   if ! (user.img_hash.nil? || user.img_hash=='')
-     imageFile = user.img_hash
-   else
-     imageFile = '_dummy'
-   end
-   userimage = "https://typo3.org/services/userimage.php?username=#{user.login}"
-   "<img src='#{userimage}' class='userimage userimage-#{size}' #{imageSizeHash[size]} onError='this.onerror=null;this.src=\"https://typo3.org/fileadmin/userimages/_dummy-big.jpg\";'/>".html_safe
+   imageSizeHash = {0 => 18, 1 => 30, 2 => 140}
+   avatar(user, :size => imageSizeHash[size]).to_s
  end
 
   def create_repository package_key, force_review, git_base_path
