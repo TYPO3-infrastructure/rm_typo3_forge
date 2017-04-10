@@ -1,8 +1,0 @@
-# Copy this file to amqp.rb and add configuration for the AMQP connection
-
- amqp:
-  host: hostname
-  port: 5672
-  username: john
-  password: password
-  vhost: myvhost
