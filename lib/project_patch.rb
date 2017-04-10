@@ -3,7 +3,7 @@ module ProjectPatch
     base.send(:include, InstanceMethods)
     base.send(:require, "digest/md5")
     base.send(:cattr_accessor, :storage_path)
-    @@strorage_path = File.join(Rails.root, "/files")
+    @@storage_path = File.join(Rails.root, "/files")
     base.send(:after_save, :write_file)
     base.send(:attr_accessor, :project_type, :creation_type)
     base.send(:validate, :validate_identifier)
