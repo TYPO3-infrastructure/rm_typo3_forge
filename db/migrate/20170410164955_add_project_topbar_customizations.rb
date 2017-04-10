@@ -1,6 +1,8 @@
 class AddProjectTopbarCustomizations < ActiveRecord::Migration
   def self.up
-    add_column :projects, :quicklinks, :text
+    unless column_exists?(:projects, :quicklinks)
+      add_column :projects, :quicklinks, :text
+    end
   end
 
   def self.down

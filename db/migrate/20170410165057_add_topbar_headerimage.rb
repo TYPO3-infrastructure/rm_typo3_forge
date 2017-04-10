@@ -1,6 +1,8 @@
 class AddTopbarHeaderimage < ActiveRecord::Migration
   def self.up
-    add_column :projects, :topbarheaderimage, :string
+    unless column_exists?(:projects, :topbarheaderimage)
+      add_column :projects, :topbarheaderimage, :string
+    end
   end
 
   def self.down

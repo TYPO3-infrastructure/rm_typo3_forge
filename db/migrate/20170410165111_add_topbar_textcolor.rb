@@ -1,6 +1,8 @@
 class AddTopbarTextcolor < ActiveRecord::Migration
   def self.up
-    add_column :projects, :topbartextcolor, :string
+    unless column_exists?(:projects, :topbartextcolor)
+      add_column :projects, :topbartextcolor, :string
+    end
   end
 
   def self.down

@@ -1,6 +1,8 @@
 class AddTopbarBackgroundcolor < ActiveRecord::Migration
   def self.up
-    add_column :projects, :topbarbackgroundcolor, :string
+    unless column_exists?(:projects, :topbarbackgroundcolor)
+      add_column :projects, :topbarbackgroundcolor, :string
+    end
   end
 
   def self.down
