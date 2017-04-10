@@ -21,7 +21,7 @@
         = button_to "Login", signin_path
     - if @news.any?
       #news.box
-        %h3 Latest
+        %h3 Latest News
         = render :partial => 'news/news', :collection => @news
         %p
           = link_to "View all", :controller => 'news'
