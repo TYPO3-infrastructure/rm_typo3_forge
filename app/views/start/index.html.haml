@@ -51,8 +51,7 @@
         %div{:id => "slideshow#{(i = i+1); i.to_s}", :style => "#{(i==1?'':'display:none;')}top:45px;position:absolute;"}
           .role-user
             = link_to_user_with_image user, 1
-          .class_selector
-            user-projects
+          .user-projects
             - user.projects.each do |prj|
               = link_to prj, :controller => 'projects', :action => 'show', :id =>   prj.identifier
     :javascript
