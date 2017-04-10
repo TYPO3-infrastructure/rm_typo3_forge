@@ -61,8 +61,6 @@ module MenuGeneratorHelper
       rootline = get_parent_project_identifiers(project)
       firstLevelProject = Project.find(rootline.last)
       out += outputProjectsRecursively(firstLevelProject, rootline, 1)
-    else # No project selected
-      out += link_to "Register project", {:controller => 'start', :action => 'createProject'}
     end
     return out.html_safe
   end

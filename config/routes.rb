@@ -4,10 +4,6 @@ Rails.application.routes.draw do
 
   get '/auto_complete/projects', controller: 'start', action: 'auto_complete_for_project_name'
 
-  get '/start/create_project', to: 'start#createProject'
-
-  post '/start/create_project', to: 'start#createProject'
-
   get 'projects/membershiprequest/:id', controller: 'projects', action: 'membershiprequest', as: :requestmembership
   post 'projects/membershiprequest/:id', controller: 'projects', action: 'membershiprequest', as: :request_membership
 
