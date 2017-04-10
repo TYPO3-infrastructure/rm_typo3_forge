@@ -1,5 +1,3 @@
-# NOT NEEDED ANYMORE!!
-
 class AddTopbarHeaderimage < ActiveRecord::Migration
   def self.up
     add_column :projects, :topbarheaderimage, :string
