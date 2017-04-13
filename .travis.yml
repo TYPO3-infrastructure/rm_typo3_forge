@@ -1,14 +1,15 @@
 language: ruby
 rvm:
-  - 2.1.5
+  - 2.1.5 # Debian 8
 
 addons:
-  mysql: "5.5"
+  mysql: "5.5" # Debian 8
 
 env:
-  - REDMINE_VER=2.6-stable
-  - REDMINE_VER=3.3-stable
   - REDMINE_VER=master
+  - REDMINE_VER=3.3-stable # branch
+  - REDMINE_VER=3.3.3 # current release
+  # - REDMINE_VER=3.3.4 # next release
 
 install: "echo skip bundle install"
 
