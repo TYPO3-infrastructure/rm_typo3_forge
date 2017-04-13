@@ -1,4 +1,3 @@
-require 'bunny'
 require 'json'
 require 'yaml'
 
