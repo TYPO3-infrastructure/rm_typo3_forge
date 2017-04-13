@@ -39,7 +39,6 @@ fi
 ln -sf $PATH_TO_PLUGIN plugins/$NAME_OF_PLUGIN
 
 mv $TESTSPACE/database.yml.travis config/database.yml
-mv $TESTSPACE/additional_environment.rb config/
 
 # install gems
 bundle install
