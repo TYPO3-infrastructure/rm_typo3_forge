@@ -4,12 +4,12 @@ module ApplicationControllerPatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
 
-      alias_method_chain :api_offset_and_limit, :endless_limit
+#      alias_method_chain :api_offset_and_limit, :endless_limit
     end
   end
 
   module InstanceMethods
-    def api_offset_and_limit_with_endless_limit(options=params)
+    def api_offset_and_limit(options=params)
       if options[:offset].present?
         offset = options[:offset].to_i
         if offset < 0
@@ -30,3 +30,5 @@ module ApplicationControllerPatch
     end
   end
 end
+
+ApplicationController.send(:prepend, ApplicationControllerPatch)
