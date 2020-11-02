@@ -1,7 +1,7 @@
 class ProjectServicesController < ApplicationController
   unloadable
 
-  skip_before_filter :check_if_login_required
+  skip_before_action :check_if_login_required
 
   def index
     @projects = Project.active.all_public

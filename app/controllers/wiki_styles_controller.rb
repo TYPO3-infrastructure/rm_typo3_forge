@@ -1,5 +1,5 @@
 class WikiStylesController < ApplicationController
-  before_filter :find_wiki, :find_style, :authorize
+  before_action :find_wiki, :find_style, :authorize
 
   def edit
   end

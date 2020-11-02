@@ -8,7 +8,7 @@ module WikiCss
         unloadable
 
         helper :wiki
-        before_filter :find_style, :only => [:show, :edit, :update]
+        before_action :find_style, :only => [:show, :edit, :update]
 
         alias_method_chain :show, :css
       end

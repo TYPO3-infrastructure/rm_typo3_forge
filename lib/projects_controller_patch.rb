@@ -2,7 +2,6 @@ module ProjectsControllerPatch
   def self.included(base) # :nodoc:
     base.send(:include, InstanceMethods)
     base.send(:menu_item, :settings, only: [:settings, :auto_complete_for_user_login])
-#    base.send(:before_filter, :authorize, except: [ :index, :list, :new, :create, :copy, :archive, :unarchive, :destroy, :auto_complete_for_user_login, :membershiprequest ])
     base.send(:before_action, :authorize, except: [ :index, :list, :new, :create, :copy, :archive, :unarchive, :destroy, :auto_complete_for_user_login, :membershiprequest ])
 
   end

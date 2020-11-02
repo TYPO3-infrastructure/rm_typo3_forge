@@ -4,7 +4,7 @@ require 'yaml'
 class StartController < ApplicationController
 
   layout 'base'
-  before_filter :require_login, :except => [:index, :auto_complete_for_project_name ]
+  before_action :require_login, :except => [:index, :auto_complete_for_project_name ]
   include ProjectsHelper
 
   def index
