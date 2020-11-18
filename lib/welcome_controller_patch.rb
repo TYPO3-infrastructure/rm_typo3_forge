@@ -4,12 +4,12 @@ module WelcomeControllerPatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
 
-      alias_method_chain :index, :typo3
+#      alias_method_chain :index, :typo3
     end
   end
 
   module InstanceMethods
-    def index_with_typo3
+    def index
       @news = News.latest User.current, 2
       @random_users = User.where("type='User'").limit(10).order("RAND()")
 
@@ -17,3 +17,5 @@ module WelcomeControllerPatch
     end
   end
 end
+
+WelcomeController.send(:prepend, WelcomeControllerPatch)

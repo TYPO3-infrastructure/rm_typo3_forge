@@ -4,12 +4,12 @@ module IssuePatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
 
-      alias_method_chain :project=, :relations_respect
+#      alias_method_chain :project=, :relations_respect
     end
   end
 
   module InstanceMethods
-    def project_with_relations_respect=(project, keep_tracker=false)
+    def project=(project, keep_tracker=false)
       self.send(:project_without_relations_respect=, project, keep_tracker)
       unless Setting.cross_project_issue_relations?
         self.relations_from.clear
@@ -18,3 +18,5 @@ module IssuePatch
     end
   end
 end
+
+Issue.send(:prepend, IssuePatch)

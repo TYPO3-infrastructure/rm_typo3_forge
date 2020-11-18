@@ -4,13 +4,15 @@ module RedmineI18nPatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
 
-      alias_method_chain :valid_languages, :typo3
+#      alias_method_chain :valid_languages, :typo3
     end
   end
 
   module InstanceMethods
-    def valid_languages_with_typo3
+    def valid_languages
       [:en]
     end
   end
 end
+# TODO: Enable RedmineI18n
+# RedmineI18n.send(:prepend, RedmineI18nPatch)

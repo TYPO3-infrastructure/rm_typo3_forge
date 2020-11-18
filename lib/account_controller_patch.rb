@@ -4,12 +4,13 @@ module AccountControllerPatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
 
-      alias_method_chain :invalid_credentials, :ldap_hint
+#      alias_method_chain :invalid_credentials, :ldap_hint
     end
   end
 
   module InstanceMethods
-    def invalid_credentials_with_ldap_hint
+    def invalid_credentials
+#    def invalid_credentials_with_ldap_hint
       logger.warn "Failed login for '#{params[:username]}' from #{request.remote_ip} at #{Time.now.utc}"
       flash.now[:error] = l(:notice_account_invalid_credentials)
       flash.now[:error] << "<br /><br />
@@ -18,3 +19,5 @@ To proceed, please log in once at <a href=\"https://typo3.org\" target=\"_blank\
     end
   end
 end
+
+AccountController.send(:prepend, AccountControllerPatch)
