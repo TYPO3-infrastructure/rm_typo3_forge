@@ -11,7 +11,10 @@ module WelcomeControllerPatch
   module InstanceMethods
     def index
       @news = News.latest User.current, 2
-      @random_users = User.where("type='User'").limit(10).order("RAND()")
+
+      # use RANDOM() for SQLite, or RAND() for everything else
+      sql_rand_function = ActiveRecord::Base.configurations[Rails.env]['adapter'] == 'sqlite3' ? 'RANDOM()' : 'RAND()'
+      @random_users = User.where("type='User'").limit(10).order(sql_rand_function)
 
       render 'start/index'
     end
